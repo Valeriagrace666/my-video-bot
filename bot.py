@@ -4,8 +4,10 @@ from magic_hour import Client
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 
+# --- ЗАМЕНИ ЭТО НА СВОЙ ТОКЕН ---
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 MAGIC_HOUR_API_KEY = os.environ.get("MAGIC_HOUR_API_KEY")
+# --------------------------------
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -50,7 +52,7 @@ async def generate_from_text(update: Update, context: ContextTypes.DEFAULT_TYPE)
             model="wan-2.2",  # Бесплатная модель
             end_seconds=5,
             resolution="480p",
-            aspect_ratio="16:9",
+            aspect_ratio="9:16",  # Вертикальное видео
             name="Telegram text video",
             wait_for_completion=True,
             download_outputs=False,
