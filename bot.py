@@ -36,12 +36,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "menu_image_video":
         context.user_data['mode'] = 'image'
         await query.edit_message_text("📸 Отправь фото, которое хочешь оживить:")
-    elif query.data == "back_to_menu":
-        context.user_data['mode'] = None
-        await query.edit_message_text(
-            "Выбери, что хочешь сделать:",
-            reply_markup=get_main_menu()
-        )
 
 # ==================== ГЕНЕРАЦИЯ ИЗ ТЕКСТА ====================
 async def generate_from_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -53,7 +47,7 @@ async def generate_from_text(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
         result = client.v1.text_to_video.generate(
             style={"prompt": prompt},
-            model="wan-2.2",
+            model="wan-2.2",  # Бесплатная модель
             end_seconds=5,
             resolution="480p",
             aspect_ratio="16:9",
@@ -74,10 +68,9 @@ async def generate_from_text(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 # ==================== ГЕНЕРАЦИЯ ИЗ ФОТО ====================
 async def generate_from_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    photo = update.message.photo[-1]  # Берём фото в максимальном качестве[citation:7]
+    photo = update.message.photo[-1]
     file = await photo.get_file()
 
-    # Скачиваем фото во временный файл
     local_path = f"/tmp/{photo.file_unique_id}.jpg"
     await file.download_to_drive(local_path)
 
@@ -91,7 +84,7 @@ async def generate_from_image(update: Update, context: ContextTypes.DEFAULT_TYPE
         result = client.v1.image_to_video.generate(
             assets={"image_file_path": local_path},
             style={"prompt": prompt},
-            model="ltx-2.5",
+            model="ltx-2.3",  # Бесплатная модель
             end_seconds=5,
             resolution="480p",
             name="Telegram image video",
