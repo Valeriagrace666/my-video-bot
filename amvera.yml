@@ -2,7 +2,7 @@ meta:
   environment: python
   toolchain:
     name: pip
-    version: 3.11
+    version: "3.11"
 
 run:
-  script: python bot.py
+  scriptName: bot.py
